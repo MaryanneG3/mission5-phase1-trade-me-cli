@@ -19,6 +19,7 @@
     "dev": "nodemon ./src/server/index.js"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "commander": "^13.0.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
