@@ -1,45 +1,37 @@
 const Products = require("../../server/models/productsModel");
 const connectProductsDB = require("../../server/db/productsDBConfig");
 const listProducts = require("./listProducts");
+const inquirer = require("inquirer");
+
+let requestedID;
 
 const requestID = async () => {
-  const inquirer = require("inquirer");
-
-  const requestID = await inquirer.prompt({
+  requestedID = await inquirer.prompt({
     name: "_id",
     message:
       "Enter the 24 digit Product ID of the product you wish to delete: ",
   });
+
+  return requestedID;
 };
 
 const deleteProduct = async () => {
   try {
     await connectProductsDB();
     await listProducts();
-    await requestID();
 
+    let isValidID = false;
     const products = await Products.find();
     const availableIds = products.map((product) => product._id);
 
-    validateID(requestID._id, availableIds);
+    while (!isValidID) {
+      await requestID();
+      isValidID = validateID(requestedID._id, availableIds);
+    }
 
-    //  else {
-    //       const productFound = await Products.findById(requestedId._id);
+    const deletedProduct = await Products.findByIdAndDelete(requestedID._id);
 
-    //       const answer = await inquirer.prompt({
-    //         name: "deleteProduct",
-    //         message: "Are you sure you want to delete this product? Yes ? No",
-    //       });
-    //       if (answer.deleteProduct === "Yes") {
-    //         console.log("Deleting product...");
-
-    //         const deletedProduct = await Products.findByIdAndDelete(
-    //           requestedId._id
-    //         );
-    //       }
-    //     }
-
-    if (deleteProduct) {
+    if (deletedProduct) {
       console.log("Product deleted successfully: ", deletedProduct);
     } else {
       console.log("Product not found");
@@ -54,13 +46,14 @@ const deleteProduct = async () => {
 const validateID = (id, availableIds) => {
   const invalidIDMessage = "ID is invalid. Please enter a valid 24 digit ID";
 
-  if (id.length !== 24) {
+  if (id.length !== 24 || typeof id !== "string") {
     console.log(invalidIDMessage);
-  } else if (typeof id === "string") {
-    console.log(invalidIDMessage);
+    return false;
   } else if (!availableIds.includes(id)) {
-    console.log("Product not found");
+    console.log("No match found for the entered ID");
+    return true;
   }
+  return true;
 };
 
 module.exports = deleteProduct;
