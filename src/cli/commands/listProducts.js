@@ -24,7 +24,7 @@ const listProducts = async (exit = true) => {
           `----------------------------------------------------------`
         );
         console.log(
-          `Title:\t\t${product.title}\nDescription:\t${product.description}\nStart Price:\t${product.start_price}\nReserve Price:\t${product.reserve_price}\n\n`
+          `Title:\t\t${product.title}\nDescription:\t${product.description}\nStart Price:\t${product.start_price}\nReserve Price:\t${product.reserve_price}`
         );
       });
       exit ? process.exit(1) : null;
