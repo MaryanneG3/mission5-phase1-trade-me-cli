@@ -5,21 +5,19 @@ const listProducts = async () => {
   try {
     await connectProductsDB();
     const products = await Products.find();
-    console.log("Products: ");
 
     products.forEach((product, index) => {
       console.log(
-        `${index + 1}. \t${product.title} \n\t Description: ${
-          product.description
-        } \n\t Start Price: ${product.start_price} \n\t Reserve Price: ${
-          product.reserve_price
-        }`
+        `\n----------------------------------------------------------`
+      );
+      console.log(`Product ${index + 1}: ID - ${product._id}`);
+      console.log(`----------------------------------------------------------`);
+      console.log(
+        `Title:\t\t${product.title}\nDescription:\t${product.description}\nStart Price:\t${product.start_price}\nReserve Price:\t${product.reserve_price}\n\n`
       );
     });
   } catch (error) {
     console.error("Error retrieving products: ", error);
-  } finally {
-    process.exit(); // Exit the process after operation is complete
   }
 };
 
