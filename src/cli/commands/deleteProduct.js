@@ -9,24 +9,32 @@ const requestID = async () => {
   requestedID = await inquirer.prompt({
     name: "_id",
     message:
-      "Enter the 24 digit Product ID of the product you wish to delete: ",
+      "\nEnter the 24 digit Product ID of the product you wish to delete: ",
   });
 
   return requestedID;
 };
 
+const checkProducts = async (products) => {
+  if (products.length === 0) {
+    process.exit();
+  }
+};
+
 const deleteProduct = async () => {
   try {
     await connectProductsDB();
-    await listProducts();
+    await listProducts(false);
+
+    const products = await Products.find();
+    await checkProducts(products);
+
+    const availableIds = products.map((product) => product._id.toString());
 
     let isValidID = false;
-    const products = await Products.find();
-    const availableIds = products.map((product) => product._id);
-
     while (!isValidID) {
       await requestID();
-      isValidID = validateID(requestedID._id, availableIds);
+      isValidID = await validateID(requestedID._id, availableIds);
     }
 
     const deletedProduct = await Products.findByIdAndDelete(requestedID._id);
@@ -43,20 +51,22 @@ const deleteProduct = async () => {
   }
 };
 
-const validateID = (id, availableIds) => {
+const validateID = async (id, availableIds) => {
   const invalidIDMessage = "ID is invalid. Please enter a valid 24 digit ID";
 
   if (id.length !== 24 || typeof id !== "string") {
     console.log(invalidIDMessage);
     return false;
-  } else if (availableIds.includes(id)) {
+  } else if (!availableIds.includes(id)) {
+    console.log(
+      "No match found for the entered ID.\n\nCheck list of products below:\n"
+    );
+    await listProducts(false);
+    return false;
+  } else {
     console.log("Match found");
     return true;
-  } else if (!availableIds.includes(id)) {
-    console.log("No match found for the entered ID");
-    return true;
   }
-  return true;
 };
 
 module.exports = deleteProduct;

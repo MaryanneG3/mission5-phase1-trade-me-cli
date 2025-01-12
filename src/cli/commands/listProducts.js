@@ -1,7 +1,7 @@
 const Products = require("../../server/models/productsModel");
 const connectProductsDB = require("../../server/db/productsDBConfig");
 
-const listProducts = async () => {
+const listProducts = async (exit = true) => {
   try {
     await connectProductsDB();
     const products = await Products.find();
@@ -12,7 +12,8 @@ const listProducts = async () => {
       );
       console.log("No products found");
       console.log(`----------------------------------------------------------`);
-      process.exit(0);
+
+      exit ? process.exit(1) : null;
     } else {
       products.forEach((product, index) => {
         console.log(
@@ -26,9 +27,11 @@ const listProducts = async () => {
           `Title:\t\t${product.title}\nDescription:\t${product.description}\nStart Price:\t${product.start_price}\nReserve Price:\t${product.reserve_price}\n\n`
         );
       });
+      exit ? process.exit(1) : null;
     }
   } catch (error) {
     console.error("Error retrieving products: ", error);
+    exit ? process.exit(1) : null;
   }
 };
 
