@@ -2,6 +2,7 @@ const connectProductsDB = require("../server/db/productsDBConfig");
 const addProduct = require("./commands/addProduct");
 const listProducts = require("./commands/listProducts");
 const deleteProduct = require("./commands/deleteProduct");
+const findProduct = require("./commands/findProduct");
 const { Command } = require("commander");
 const program = new Command();
 
@@ -32,6 +33,14 @@ program
   .description("Delete a product")
   .action(() => {
     deleteProduct();
+  });
+
+program
+  .command("find")
+  .alias("f")
+  .description("Find a product")
+  .action(() => {
+    findProduct();
   });
 
 program.parse(process.argv);
