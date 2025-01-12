@@ -6,16 +6,27 @@ const listProducts = async () => {
     await connectProductsDB();
     const products = await Products.find();
 
-    products.forEach((product, index) => {
+    if (products.length === 0) {
       console.log(
         `\n----------------------------------------------------------`
       );
-      console.log(`Product ${index + 1}: ID - ${product._id}`);
+      console.log("No products found");
       console.log(`----------------------------------------------------------`);
-      console.log(
-        `Title:\t\t${product.title}\nDescription:\t${product.description}\nStart Price:\t${product.start_price}\nReserve Price:\t${product.reserve_price}\n\n`
-      );
-    });
+      process.exit(0);
+    } else {
+      products.forEach((product, index) => {
+        console.log(
+          `\n----------------------------------------------------------`
+        );
+        console.log(`Product ${index + 1}: ID - ${product._id}`);
+        console.log(
+          `----------------------------------------------------------`
+        );
+        console.log(
+          `Title:\t\t${product.title}\nDescription:\t${product.description}\nStart Price:\t${product.start_price}\nReserve Price:\t${product.reserve_price}\n\n`
+        );
+      });
+    }
   } catch (error) {
     console.error("Error retrieving products: ", error);
   }

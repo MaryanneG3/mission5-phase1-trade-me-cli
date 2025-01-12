@@ -49,6 +49,9 @@ const validateID = (id, availableIds) => {
   if (id.length !== 24 || typeof id !== "string") {
     console.log(invalidIDMessage);
     return false;
+  } else if (availableIds.includes(id)) {
+    console.log("Match found");
+    return true;
   } else if (!availableIds.includes(id)) {
     console.log("No match found for the entered ID");
     return true;
