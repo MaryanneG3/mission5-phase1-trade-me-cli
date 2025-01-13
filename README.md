@@ -27,48 +27,61 @@
 
 This project is designed to address the TradeMe user's feedback that "product pages are overloaded with information." The goal is to create an efficient, streamlined API that serves only the minimum data required for auction items, using MongoDB as the NoSQL database to store and manage the data. The project consists of two key functionalities:
 
-Folder Structure:
+### Folder Structure:
 
-src/server: Contains the API implementation and server logic.
-src/cli: Houses the CLI tool for database operations, including seeding, updating, and deleting data.
+    src/server: Contains the API implementation and server logic
 
-- Command-Line Interface (CLI) Tool
+    src/cli: Houses the CLI tool for database operations, including seeding, updating, and deleting data.
 
-The CLI tool, located in the cli folder, is used to seed sample auction data into the MongoDB database and manage CRUD (Create, Read, Update, Delete) operations.
+### Command-Line Interface (CLI) Tool
 
-Developers can add pre-defined auction items with the following fields:
+    The CLI tool, located in the cli folder, is used to seed sample auction data into the MongoDB database and manage CRUD (Create, Read, Update, Delete) operations.
 
-title: The name of the auction item.
-description: A brief description of the item.
-start_price: The starting price for the auction.
-reserve_price: The minimum price at which the item can be sold.
+    Developers can add pre-defined auction items with the following fields:
 
-The seed data and CLI commands are source-controlled, ensuring that team members can easily set up the database by cloning the repository and running the commands.
+        title: The name of the auction item.
+        description: A brief description of the item.
+        start_price: The starting price for the auction.
+        reserve_price: The minimum price at which the item can be sold.
 
-- Server and API Setup
+### Server and API Setup
 
-The server folder contains the API setup, which is designed to:
+    The server folder contains the API setup, which is designed to:
 
-1. Provide CRUD operations for auction data through API endpoints.
-2. Enable search functionality to retrieve auction items that match specified criteria. The search can utilize keyword matching, and optionally, generative AI for enhanced relevance and accuracy.
+    1. Provide CRUD operations for auction data through API endpoints.
+    2. Enable search functionality to retrieve auction items that match specified criteria.
 
-This modular design ensures that both developers and the application can efficiently interact with the MongoDB database, maintaining a balance between simplicity and functionality. It streamlines the user experience by delivering only the essential auction data to the frontend.
+### User Interaction:
 
-**User Interaction**:
+#### Command-Line Interface (CLI) Tool
 
-- Job Title Input: The user types in a job title they are interviewing for
-- Interview Flow: The AI Interviewer, powered by Google Gemini, will ask a series of questions, starting with “Tell me about yourself.” The subsequent questions will be dynamically generated based on the user’s responses, focused on the specific job title entered.
-- User Response Input: After each question, the user provides a response in a textbox.
-- Submission: Once the user answers, they can submit their response, which is then sent to Gemini for evaluation.
+The CLI tool can be run by the user using the following code:
 
-**AI Functionality**:
+<p style="color: lightblue"> node src/cli/index.js <span style="color: lightgreen">command</span> </p>
 
-- The AI Interviewer will ask at least 6 questions, based on the job title and user responses.
-- At the end of the interview, Gemini will provide feedback on how well the user answered the questions and suggest areas for improvement.
+Below are the commands:
+
+    "add" or 'a'
+
+        - when user runs add command they will be prompted to input the new product fields one by one in the terminal
+        - respond with each product detail
+
+    "delete" or 'd'
+
+        - user will be prompted to enter an id in terminal
+        - respond with id
+
+    "list" or 'l'
+
+        - user will receive a list of products in the database(none if null)
+
+    "find" or 'f'
+
+        - user will be prompted to make a selection
 
 **Generative AI Use**:
 
-- The project utilizes Google Gemini, which powers the AI Interviewer to ask tailored questions and assess the user’s responses based on the job title provided.
+- The search function utilizes Google Gemini, which upon receiving the product descriptions from the database will create a response if a product description matches the keyword entered by the user
 
 **Purpose**: This tool aims to help users prepare for job interviews by simulating real-world interview scenarios, offering personalized feedback, and improving their interview skills.
 
@@ -78,9 +91,9 @@ This modular design ensures that both developers and the application can efficie
 
 This section lists major frameworks/libraries used to bootstrap this project.
 
-- [![React][React.js]][React-url]
-- [![Node][Node.js]][Node-url]
-- [![Express][Express.js]][Express-url]
+[![Node][Node.js]][Node-url]
+[![Express][Express.js]][Express-url]
+[![Mongoose][Mongoose]][Mongoose-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -92,21 +105,7 @@ To get a local copy of the application up and running follow these simple exampl
 
 ### Prerequisites
 
-**_ Frontend _**
-
-- npm
-
-  ```sh
-  npm install npm@latest -g
-  ```
-
-- Gemini
-
-  ```sh
-  npm install @google/generative-ai
-  ```
-
-**_ Backend _**
+**Server**
 
 - express
 
@@ -120,18 +119,50 @@ To get a local copy of the application up and running follow these simple exampl
   npm install cors
   ```
 
+- mongoose
+
+  ```sh
+  npm install mongoose
+  ```
+
+- google generative ai
+
+  ```sh
+  npm install   @google/generative-ai
+  ```
+
+**CLI**
+
+- commander
+
+  ```sh
+  npm install commander
+  ```
+
+- inquirer
+
+  ```sh
+  npm install inquirer
+  ```
+
+- mongoose
+
+  ```sh
+  npm install mongoose
+  ```
+
 ### Installation
 
-1. Get a free API Key at [https://ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/caitlincode/g7-m3.git
+   git clone https://github.com/MaryanneG3/mission5-phase1-trade-me-cli.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API key in `index.js` in the backend directory
+3. Get a free API Key at [https://ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs)
+4. Enter your API key in `productsController.js` in the server directory
    ```js
    const genAI = "ENTER YOUR API KEY";
    ```
@@ -147,11 +178,11 @@ To get a local copy of the application up and running follow these simple exampl
 
 ## Usage
 
-To use the project simply enter a role in the text area then click start interview
+To use the cli tool simply run <p style="color: lightblue"> node src/cli/index.js <span style="color: lightgreen">command</span> </p>
 
-Gemini will generate a question to which the user will provide an answer to by typing their response in the text area.
+To start the server run npm run dev
 
-When the interview comes to a conclusion, the user must click End Interview to receive feedback.
+To test api endpoints in postman simply enter the data in json format in the rquest body
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -169,9 +200,11 @@ Helpful resources
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=blue
 [React-url]: https://reactjs.org/
-[Node.js]: https://img.shields.io/badge/node.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Node.js]: https://img.shields.io/badge/node.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=blue
 [Node-url]: https://nodejs.org/
-[Express.js]: https://img.shields.io/badge/Express.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Express.js]: https://img.shields.io/badge/Express.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=blue
 [Express-url]: https://expressjs.com/
+[Mongoose]: https://img.shields.io/badge/Mongoose-20232A?style=for-the-badge&logo=Mongoose&logoColor=blue
+[Mongoose-url]: https://mongoosejs.com/
