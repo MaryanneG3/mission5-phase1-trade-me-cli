@@ -22,6 +22,7 @@
     "@google/generative-ai": "^0.21.0",
     "commander": "^13.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "inquirer": "^8.2.4",
     "mongodb": "^6.12.0",

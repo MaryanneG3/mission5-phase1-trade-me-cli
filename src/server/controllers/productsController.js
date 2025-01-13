@@ -7,7 +7,7 @@ const {
 } = require("../../cli/helpers/productFunctions");
 
 // Initialize Google Generative AI
-const genAI = new GoogleGenerativeAI("AIzaSyCRUp5fxw_AShm4o8jmw6g1b_J63GUh1MU");
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 exports.addProduct = async (req, res) => {
