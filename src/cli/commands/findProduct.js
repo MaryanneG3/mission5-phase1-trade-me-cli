@@ -49,7 +49,7 @@ const findProduct = async () => {
         message: "\nEnter the title of the product you wish to find: ",
       });
 
-      const titleRegex = new RegExp(`^${requestedTitle.title}`, "i");
+      const titleRegex = new RegExp(`${requestedTitle.title}`, "i");
 
       const products = await Products.find({ title: titleRegex });
       checkProducts(products);
@@ -58,15 +58,16 @@ const findProduct = async () => {
     } else if (method.method === "Keyword") {
       const requestedKeyword = await inquirer.prompt({
         name: "keyword",
-        message: "\nEnter the keyword of the product you wish to find: ",
+        message: "\nEnter the keyword to search in product descriptions: ",
       });
 
-      const keywordRegex = new RegExp(`^${requestedKeyword.keyword}`, "i");
+      const keywordRegex = new RegExp(`${requestedKeyword.keyword}`, "i");
 
       const products = await Products.find({
-        $or: [{ title: keywordRegex }, { description: keywordRegex }],
+        description: { $regex: keywordRegex },
       });
-      checkProducts(products);
+
+      await checkProducts(products);
       console.log(products);
     }
   } catch (error) {
